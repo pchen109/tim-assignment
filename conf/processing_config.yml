@@ -1,0 +1,20 @@
+version: 1
+datastore:
+  filename: stats.json
+scheduler:
+  interval: 5
+config:
+  conf_log_file: conf_log.yaml
+eventstores:
+  login_info:
+    url: http://storage:8090/lol/login
+  performance_report:
+    url: http://storage:8090/lol/performance
+schema:
+  stat: {
+            "num_logins": 0,
+            "max_login_streak": 0,
+            "num_performance_report": 0,
+            "max_kills": 0,
+            "last_updated": "1999-01-01T12:00:00-08:00"
+        }

@@ -1,0 +1,11 @@
+version: 1
+datastore:
+  user: yapper
+  password: yapper
+  hostname: db
+  port: 3306
+  db: yapper
+events:
+  hostname: kafka
+  port: 9092
+  topic: events
