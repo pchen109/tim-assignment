@@ -34,8 +34,8 @@ def init_scheduler():
 
 def populate_stats():
     logger.info("Beep boop! Updating data... 🤖")
-    if path.exists(stats_file_path):
-        with open(stats_file_path, "r") as fp:
+    if path.exists("/app/data/output.json"):
+        with open("/app/data/output.json", "r") as fp:
             stats = json.load(fp)
     else:
         stats = default_initial_state
@@ -83,11 +83,11 @@ def new_record_value(events, key):
 def get_stats():
     logger.info("GET /stats request received.")
 
-    if not path.exists(stats_file_path):
+    if not path.exists("/app/data/output.json"):
         logger.error("Statistics file not found.")
         return NoContent, 404
 
-    with open(stats_file_path, "r") as file:
+    with open("/app/data/output.json", "r") as file:
         stats = json.load(file) 
     
     logger.debug(f"Statistics: {json.dumps(stats, indent=4)}")
