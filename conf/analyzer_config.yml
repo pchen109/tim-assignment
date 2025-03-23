@@ -4,7 +4,7 @@ events:
   port: 9092
   topic: events
 datastore:
-  filename: stats.json
+  filename: /app/stats.json
 schema:
   stat: {
             "num_logins": 0,
