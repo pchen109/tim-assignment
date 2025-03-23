@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-# remove the key pair "lab9_time" from the AWS account
-aws ec2 delete-key-pair --key-name lab9_tim
-
