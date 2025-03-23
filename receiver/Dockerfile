@@ -11,6 +11,8 @@ COPY . .
 RUN mkdir logs
 RUN mkdir conf
 RUN chown -R nobody:nogroup .
+RUN find logs -type f -exec chmod 644 {} \;
+RUN find logs -type f -exec chown nobody:nogroup {} \;
 USER nobody
 
 EXPOSE 8080

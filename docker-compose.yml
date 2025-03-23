@@ -4,14 +4,14 @@ services:
       context: receiver
       dockerfile: Dockerfile
     volumes:
-      - ./logs/receiver.log:/app/logs/receiver.log
       - ./logs/test.log:/app/logs/test.log
+      - ./logs/receiver.log:/app/logs/receiver.log
       - ./conf/log_config.yml:/app/conf/log_config.yml
       - ./conf/receiver_config.yml:/app/conf/receiver_config.yml
     # privileged: true
     # user: root
     #### Note: chown -R nobody:nogroup /app && somehow is needed get file owned by nobody:nogroup
-    entrypoint: ["sh", "-c", "find /app/conf -type f -exec chmod 644 {} \\; && find /app/logs -type f -exec chmod 644 {} \\; && exec python3 app.py"]
+    # entrypoint: ["sh", "-c", "find /app/conf -type f -exec chmod 644 {} \\; && find /app/logs -type f -exec chmod 644 {} \\; && exec python3 app.py"]
     depends_on:
       - kafka
     ports:
