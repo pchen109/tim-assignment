@@ -3,6 +3,8 @@ services:
     build:
       context: receiver
       dockerfile: Dockerfile
+    environment:
+      - TZ=America/Los_Angeles
     volumes:
       - ./logs/receiver.log:/app/logs/receiver.log
       - ./conf/log_config.yml:/app/conf/log_config.yml
@@ -15,6 +17,8 @@ services:
     build:
       context: storage
       dockerfile: Dockerfile
+    environment:
+      - TZ=America/Los_Angeles
     volumes:
       - ./logs/storage.log:/app/logs/storage.log
       - ./conf/log_config.yml:/app/conf/log_config.yml
@@ -28,8 +32,10 @@ services:
     build:
       context: processing
       dockerfile: Dockerfile
+    environment:
+      - TZ=America/Los_Angeles
     volumes:
-      - ./logs/processing.log:/app/logs/processings.log
+      - ./logs/processing.log:/app/logs/processing.log
       - ./conf/log_config.yml:/app/conf/log_config.yml
       - ./conf/processing_config.yml:/app/conf/processing_config.yml
       - ./data/processing/output.json:/app/data/output.json
@@ -41,6 +47,8 @@ services:
     build:
       context: analyzer
       dockerfile: Dockerfile
+    environment:
+      - TZ=America/Los_Angeles
     volumes:
       - ./logs/analyzer.log:/app/logs/analyzer.log
       - ./conf/log_config.yml:/app/conf/log_config.yml
