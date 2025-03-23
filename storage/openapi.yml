@@ -1,0 +1,182 @@
+openapi: 3.0.0  
+info:
+  title: LOLTracker API
+  description: Simple API for user login and player performance
+  contact:
+    email: pchen109@bcit.ca
+  version: '1'
+paths:
+  /lol/login:
+    get:
+      tags:
+        - devices
+      summary: returns user login information
+      operationId: app.get_user_login_info
+      description: Gets login info added after a timestamp
+      parameters:
+        - name: start_timestamp
+          in: query
+          description: Limits the number of logins returned
+          schema:
+            type: string
+            format: date-time
+            example: 2016-08-29T09:12:33Z
+        - name: end_timestamp
+          in: query
+          description: Limits the number of logins returned
+          schema:
+            type: string
+            format: date-time
+            example: 2016-08-29T09:12:33Z
+      responses:
+        "200":
+          description: Successfully returned a list of login events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UserLogin"
+    # post:
+    #   summary: reports user login information
+    #   description: Adds a new user login report to the system
+    #   operationId: app.report_user_login_info
+    #   requestBody:
+    #     description: user login report to add
+    #     content:
+    #       application/json:
+    #         schema:
+    #           $ref: '#/components/schemas/UserLogin'
+    #   responses:
+    #     "201":
+    #       description: item created
+    #     "400":
+    #       description: "invalid input, object invalid"
+  /lol/performance:
+    get:
+      tags:
+        - devices
+      summary: returns user performance information
+      operationId: app.get_player_performance
+      description: Gets player performance info added after a timestamp
+      parameters:
+        - name: start_timestamp
+          in: query
+          description: Limits the number of player performance returned
+          schema:
+            type: string
+            format: date-time
+            example: 2016-08-29T09:12:33Z
+        - name: end_timestamp
+          in: query
+          description: Limits the number of player performance returned
+          schema:
+            type: string
+            format: date-time
+            example: 2016-08-29T09:12:33Z
+      responses:
+        "200":
+          description: Successfully returned a list of player performance events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PlayerPerformance"
+    # post:
+    #   summary: reports player's KDA and gamelength
+    #   description: Adds a new player performance report to the system
+    #   operationId: app.report_player_performance
+    #   requestBody:
+    #     description: Player performance report to add
+    #     content:
+    #       application/json:
+    #         schema:
+    #           $ref: '#/components/schemas/PlayerPerformance'
+    #   responses:
+    #     "201":
+    #       description: item created
+    #     "400":
+    #       description: "invalid input, object invalid"
+components:
+  schemas:
+    UserLogin:
+      required:
+      - user_id
+      - region
+      - login_streak
+      - timestamp
+      - trace_id
+      type: object
+      properties:
+        user_id:
+          type: string
+          description: users' in-game-name
+          format: uuid
+          example: zebra-#zoo
+        region:
+          type: string
+          description: server location
+          example: Whistler
+        login_streak:
+          type: integer
+          description: number of login in consecutive days
+          example: 7
+        timestamp:
+          type: string
+          description: timestamp when login happened
+          format: date-time
+          example: 2016-08-29T09:12:33.001Z
+        trace_id:
+          type: string
+          description: unique trace ID
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+
+    PlayerPerformance:
+      required:
+      - user_id
+      - match_id
+      - kills
+      - deaths
+      - assists
+      - timestamp
+      - game_length
+      - trace_id
+      type: object
+      properties:
+        user_id:
+          type: string
+          description: users' in-game-name
+          format: uuid
+          example: zebra-#zoo
+        match_id:
+          type: string
+          description: match ID 
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        kills:
+          type: integer
+          description: number of kills in one game
+          example: 5
+        deaths:
+          type: integer
+          description: number of deaths in one game
+          example: 2
+        assists:
+          type: integer
+          description: number of assists in one game
+          example: 8
+        timestamp:
+          type: string
+          format: date-time
+          example: 2016-08-29T09:12:33.001Z
+        game_length:
+          type: integer
+          description: length of the game in seconds
+          example: 1515
+        trace_id:
+          type: string
+          description: unique trace ID
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000

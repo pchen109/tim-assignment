@@ -1,0 +1,7 @@
+conf
+data
+logs
+scripts
+.env
+terraform
+ansible

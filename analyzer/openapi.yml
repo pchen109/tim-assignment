@@ -1,0 +1,78 @@
+openapi: 3.0.0  
+info:
+  title: LOLTracker API
+  description: Simple API for user login and player performance
+  contact:
+    email: pchen109@bcit.ca
+  version: '1'
+paths:
+  /lol/login:
+    get:
+      summary: Retrieve user login information
+      operationId: app.get_user_login_info
+      description: This endpoint fetches the user's login information, including their username and login streak
+      parameters:
+        - name: index
+          in: query
+          description: index of the user login report
+          required: true
+          schema:
+            type: integer
+            example: 100
+      responses:
+        "201":
+          description: item created
+        "400":
+          description: invalid input, object invalid
+        "404":
+          description: not Found
+
+  /lol/performance:
+    get:
+      summary: Retrieve user player performance information
+      operationId: app.get_player_performance
+      description: This endpoint fetches the playeys state, including KDA and game length
+      parameters:
+        - name: index
+          in: query
+          description: index of the player performance report
+          required: true
+          schema:
+            type: integer
+            example: 100
+      responses:
+        "201":
+          description: item created
+        "400":
+          description: "invalid input, object invalid"
+        "404":
+          description: not Found
+
+  /stats:
+    get:
+      summary: Retrieves login and performance report stats
+      operationId: app.get_stats
+      description: Returns login activity and performance metrics, including user trends and KDA stats.
+      responses:
+        '200':
+          description: Successfully retrieved login and performance statistics.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReadingStats'
+        '400':
+          description: Bad request. Invalid input parameters.
+components:
+  schemas:
+    ReadingStats:
+      required:
+        - num_logins
+        - num_performance_report
+      properties:
+        num_logins:
+          type: integer
+          example: 500000
+        num_performance_report:
+          type: integer
+          example: 500000
+      type: object

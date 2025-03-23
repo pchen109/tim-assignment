@@ -1,0 +1,101 @@
+services:
+  receiver:
+    build:
+      context: receiver
+      dockerfile: Dockerfile
+    volumes:
+      - ./logs/receiver.log:/app/logs/receiver.log
+      - ./logs/test.log:/app/logs/test.log
+      - ./conf/log_config.yml:/app/conf/log_config.yml
+      - ./conf/receiver_config.yml:/app/conf/receiver_config.yml
+    # privileged: true
+    # user: root
+    #### Note: chown -R nobody:nogroup /app && somehow is needed get file owned by nobody:nogroup
+    entrypoint: ["sh", "-c", "find /app/conf -type f -exec chmod 644 {} \\; && find /app/logs -type f -exec chmod 644 {} \\; && exec python3 app.py"]
+    depends_on:
+      - kafka
+    ports:
+      - '8080:8080'
+  storage:
+    build:
+      context: storage
+      dockerfile: Dockerfile
+    volumes:
+      - ./logs/storage.log:/app/logs/storage.log
+      - ./conf/an.yml:/app/conf/an.yml
+      - ./conf/log_config.yml:/app/conf/log_config.yml
+      - ./conf/storage_config.yml:/app/conf/storage_config.yml
+    entrypoint: ["sh", "-c", "find /app/conf -type f -exec chmod 644 {} \\; && find /app/logs -type f -exec chmod 644 {} \\; && exec python3 app.py"]
+    depends_on:
+      db:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+  processing:
+    build:
+      context: processing
+      dockerfile: Dockerfile
+    volumes:
+      - ./logs/processing.log:/app/logs/processings.log
+      - ./conf/log_config.yml:/app/conf/log_config.yml
+      - ./conf/processing_config.yml:/app/conf/processing_config.yml
+      - ./data/processing/output.json:/app/data/output.json
+    entrypoint: ["sh", "-c", "find /app/conf -type f -exec chmod 644 {} \\; && find /app/logs -type f -exec chmod 644 {} \\; && exec python3 app.py"]
+    depends_on:
+      - storage
+    ports:
+      - '8100:8100'
+  analyzer:
+    build:
+      context: analyzer
+      dockerfile: Dockerfile
+    volumes:
+      - ./logs/analyzer.log:/app/logs/analyzer.log
+      - ./conf/log_config.yml:/app/conf/log_config.yml
+      - ./conf/analyzer_config.yml:/app/conf/analyzer_config.yml
+    entrypoint: ["sh", "-c", "find /app/conf -type f -exec chmod 644 {} \\; && find /app/logs -type f -exec chmod 644 {} \\; && exec python3 app.py"]
+    depends_on:
+      - kafka
+    ports:
+      - '8111:8111'
+  zookeeper:
+    image: wurstmeister/zookeeper
+    volumes:
+      - zookeeper_data:/data
+  kafka:
+    image: wurstmeister/kafka
+    hostname: kafka
+    environment:
+      KAFKA_CREATE_TOPICS: 'events:1:1'
+      KAFKA_ADVERTISED_HOST_NAME: kafka
+      KAFKA_LISTENERS: 'INSIDE://:29092,OUTSIDE://:9092'
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+      KAFKA_ADVERTISED_LISTENERS: 'INSIDE://kafka:29092,OUTSIDE://kafka:9092'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT'
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./data/kafka:/kafka/
+    command: >
+      sh -c "rm -f ./kafka/kafka-logs-kafka/meta.properties && start-kafka.sh"
+    depends_on:
+      - zookeeper
+  db:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: ${MYSQL_RANDOM_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - ./data/database:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u${MYSQL_USER} -p${MYSQL_PASSWORD} --silent"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+
+volumes:
+  zookeeper_data:

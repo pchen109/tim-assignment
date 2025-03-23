@@ -1,0 +1,53 @@
+openapi: 3.0.0  
+info:
+  title: LOLTracker API
+  version: '1'
+  description: Simple API for user login and player performance
+  contact:
+    email: pchen109@bcit.ca
+paths:
+  /stats:
+    get:
+      tags:
+        - stats
+      summary: Retrieves login and performance report stats
+      operationId: app.get_stats
+      description: Returns login activity and performance metrics, including user trends and KDA stats.
+      responses:
+        '200':
+          description: Successfully retrieved login and performance statistics.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReadingStats'
+        '400':
+          description: Bad request. Invalid input parameters.
+components:
+  schemas:
+    ReadingStats:
+      required:
+        - num_logins
+        - max_login_streak
+        - num_performance_report
+        - max_kills
+        - last_updated
+      properties:
+        num_logins:
+          type: integer
+          example: 500000
+        max_login_streak:
+          type: integer
+          example: 10
+        num_performance_report:
+          type: integer
+          example: 500000
+        max_kills:
+          type: integer
+          example: 20
+        last_updated:
+          type: string
+          format: date-time
+          example: '2021-03-01T12:00:00-08:00'
+      type: object
