@@ -1,15 +1,16 @@
-# conf
-# data
-# logs
-# scripts
-# .env
-# terraform
-# ansible
+### original
+conf
+data
+logs
+scripts
+.env
+terraform
+ansible
 
-
-data/database
-data/kafka
-teffraform/terraform.tfstate
-terraform/terraform.tfstate.backup
-terraform/.terraform
-terraform/.terraform.lock.hcl
+### full back 
+# data/database
+# data/kafka
+# teffraform/terraform.tfstate
+# terraform/terraform.tfstate.backup
+# terraform/.terraform
+# terraform/.terraform.lock.hcl
