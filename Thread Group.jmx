@@ -484,7 +484,7 @@ vars.put(&quot;jsonPerformance&quot;, jsonStringPer)
         </elementProp>
       </ThreadGroup>
       <hashTree>
-        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager">
+        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
           <collectionProp name="HeaderManager.headers">
             <elementProp name="" elementType="Header">
               <stringProp name="Header.name">Content-Type</stringProp>
@@ -557,7 +557,7 @@ vars.put(&quot;jsonPerformance&quot;, jsonStringPer)
         </JSR223PreProcessor>
         <hashTree/>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP_Request_Login">
-          <stringProp name="HTTPSampler.domain">35.90.62.18</stringProp>
+          <stringProp name="HTTPSampler.domain">35.93.218.181</stringProp>
           <stringProp name="HTTPSampler.port">8080</stringProp>
           <stringProp name="HTTPSampler.path">lol/login</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
@@ -576,7 +576,7 @@ vars.put(&quot;jsonPerformance&quot;, jsonStringPer)
         </HTTPSamplerProxy>
         <hashTree/>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP_Request_Performance">
-          <stringProp name="HTTPSampler.domain">35.90.62.18</stringProp>
+          <stringProp name="HTTPSampler.domain">35.93.218.181</stringProp>
           <stringProp name="HTTPSampler.port">8080</stringProp>
           <stringProp name="HTTPSampler.path">lol/performance</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
@@ -594,13 +594,13 @@ vars.put(&quot;jsonPerformance&quot;, jsonStringPer)
           </elementProp>
         </HTTPSamplerProxy>
         <hashTree/>
-        <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="Debug Sampler">
+        <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="Debug Sampler" enabled="true">
           <boolProp name="displayJMeterProperties">true</boolProp>
           <boolProp name="displayJMeterVariables">true</boolProp>
           <boolProp name="displaySystemProperties">false</boolProp>
         </DebugSampler>
         <hashTree/>
-        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree">
+        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
           <boolProp name="ResultCollector.error_logging">false</boolProp>
           <objProp>
             <name>saveConfig</name>
@@ -637,7 +637,7 @@ vars.put(&quot;jsonPerformance&quot;, jsonStringPer)
           <stringProp name="filename"></stringProp>
         </ResultCollector>
         <hashTree/>
-        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
           <collectionProp name="Arguments.arguments">
             <elementProp name="NA" elementType="Argument">
               <stringProp name="Argument.name">NA</stringProp>
