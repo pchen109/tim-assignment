@@ -100,5 +100,23 @@ app.add_api("openapi.yml",
             validate_responses=True
             )
 
+
+
+from connexion.middleware import MiddlewarePosition
+from starlette.middleware.cors import CORSMiddleware
+
+# app = FlaskApp(__name__)
+
+app.add_middleware(
+    CORSMiddleware,
+    position=MiddlewarePosition.BEFORE_EXCEPTION,
+    allow_origins=["*"],  # Allows all origins (INSECURE for production!)
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
+
+
+
 if __name__ == '__main__':
     app.run(port=8111, host="0.0.0.0")

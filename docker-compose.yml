@@ -96,5 +96,15 @@ services:
       start_period: 30s
       timeout: 10s
 
+
+  dashboard:
+    image: dashboard-ui
+    ports:
+      - "80:80"
+    depends_on:
+      - processing
+      - analyzer
+
+
 volumes:
   zookeeper_data:

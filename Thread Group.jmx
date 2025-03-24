@@ -557,7 +557,8 @@ vars.put(&quot;jsonPerformance&quot;, jsonStringPer)
         </JSR223PreProcessor>
         <hashTree/>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP_Request_Login">
-          <stringProp name="HTTPSampler.domain">35.92.66.125</stringProp>
+          <stringProp name="TestPlan.comments">35.92.66.125</stringProp>
+          <stringProp name="HTTPSampler.domain">localhost</stringProp>
           <stringProp name="HTTPSampler.port">8080</stringProp>
           <stringProp name="HTTPSampler.path">lol/login</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
@@ -576,7 +577,8 @@ vars.put(&quot;jsonPerformance&quot;, jsonStringPer)
         </HTTPSamplerProxy>
         <hashTree/>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP_Request_Performance">
-          <stringProp name="HTTPSampler.domain">35.92.66.125</stringProp>
+          <stringProp name="TestPlan.comments">35.92.66.125</stringProp>
+          <stringProp name="HTTPSampler.domain">localhost</stringProp>
           <stringProp name="HTTPSampler.port">8080</stringProp>
           <stringProp name="HTTPSampler.path">lol/performance</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
