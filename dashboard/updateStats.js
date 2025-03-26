@@ -1,12 +1,5 @@
 /* UPDATE THESE VALUES TO MATCH YOUR SETUP */
 
-// const PROCESSING_STATS_API_URL = "http://35.92.66.125:8100/stats"
-// const ANALYZER_API_URL = {
-//     stats: "http://35.92.66.125:8111/stats",
-//     snow: "http://35.92.66.125:8111/lol/login?index=1",
-//     lift: "http://35.92.66.125:8111/lol/performance?index=1"
-// }
-
 const PROCESSING_STATS_API_URL = "http://localhost:8100/stats"
 const ANALYZER_API_URL = {
     stats: "http://localhost:8111/stats",

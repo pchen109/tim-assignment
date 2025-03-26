@@ -473,7 +473,7 @@ vars.put(&quot;jsonPerformance&quot;, jsonStringPer)
         </Arguments>
         <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Lab 9">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Lab 9" enabled="true">
         <intProp name="ThreadGroup.num_threads">3</intProp>
         <intProp name="ThreadGroup.ramp_time">1</intProp>
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
@@ -484,7 +484,7 @@ vars.put(&quot;jsonPerformance&quot;, jsonStringPer)
         </elementProp>
       </ThreadGroup>
       <hashTree>
-        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager">
           <collectionProp name="HeaderManager.headers">
             <elementProp name="" elementType="Header">
               <stringProp name="Header.name">Content-Type</stringProp>
@@ -558,7 +558,7 @@ vars.put(&quot;jsonPerformance&quot;, jsonStringPer)
         <hashTree/>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP_Request_Login">
           <stringProp name="TestPlan.comments">35.92.66.125</stringProp>
-          <stringProp name="HTTPSampler.domain">35.92.66.125</stringProp>
+          <stringProp name="HTTPSampler.domain">34.220.63.182</stringProp>
           <stringProp name="HTTPSampler.port">8080</stringProp>
           <stringProp name="HTTPSampler.path">lol/login</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
@@ -578,7 +578,7 @@ vars.put(&quot;jsonPerformance&quot;, jsonStringPer)
         <hashTree/>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP_Request_Performance">
           <stringProp name="TestPlan.comments">35.92.66.125</stringProp>
-          <stringProp name="HTTPSampler.domain">35.92.66.125</stringProp>
+          <stringProp name="HTTPSampler.domain">34.220.63.182</stringProp>
           <stringProp name="HTTPSampler.port">8080</stringProp>
           <stringProp name="HTTPSampler.path">lol/performance</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
@@ -596,7 +596,7 @@ vars.put(&quot;jsonPerformance&quot;, jsonStringPer)
           </elementProp>
         </HTTPSamplerProxy>
         <hashTree/>
-        <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="Debug Sampler" enabled="true">
+        <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="Debug Sampler">
           <boolProp name="displayJMeterProperties">true</boolProp>
           <boolProp name="displayJMeterVariables">true</boolProp>
           <boolProp name="displaySystemProperties">false</boolProp>
@@ -639,7 +639,7 @@ vars.put(&quot;jsonPerformance&quot;, jsonStringPer)
           <stringProp name="filename"></stringProp>
         </ResultCollector>
         <hashTree/>
-        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
           <collectionProp name="Arguments.arguments">
             <elementProp name="NA" elementType="Argument">
               <stringProp name="Argument.name">NA</stringProp>
