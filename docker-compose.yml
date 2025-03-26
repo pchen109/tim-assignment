@@ -28,6 +28,9 @@ services:
         condition: service_healthy
       kafka:
         condition: service_started
+    ### this port is for testing → need to be deleted → shouldn't expose???
+    ports:
+      - '8090:8090'
   processing:
     build:
       context: processing
@@ -95,16 +98,33 @@ services:
       retries: 5
       start_period: 30s
       timeout: 10s
-
-
   dashboard:
+    build:
+      context: dashboard
+      dockerfile: Dockerfile
     image: dashboard-ui
     ports:
       - "80:80"
     depends_on:
       - processing
       - analyzer
-
+  consistency_check:
+    build:
+      context: consistency_check
+      dockerfile: Dockerfile
+    environment:
+      - TZ=America/Los_Angeles
+    volumes:
+      - ./logs/consistency_check.log:/app/logs/consistency_check.log
+      - ./conf/log_config.yml:/app/conf/log_config.yml
+      - ./conf/consistency_check_config.yml:/app/conf/consistency_check_config.yml
+      - ./consistency_check/consistency_check_output.json:/app/consistency_check_output.json
+    depends_on:
+      - storage
+      - analyzer
+      - processing
+    ports:
+      - '7777:7777'
 
 volumes:
   zookeeper_data:

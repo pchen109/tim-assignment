@@ -62,17 +62,82 @@ paths:
                 $ref: '#/components/schemas/ReadingStats'
         '400':
           description: Bad request. Invalid input parameters.
+
+  /login_ids:
+    get:
+      summary: returns list of login's event ids and trace ids
+      operationId: app.get_login_ids
+      description: get login's event ids and trace ids
+      responses:
+        "200":
+          description: Successfully returned the list of login's event ids and trace ids
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LoginIds'
+
+  /performance_ids:
+    get:
+      summary: returns list of performance's event ids and trace ids
+      operationId: app.get_performacne_ids
+      description: get performance's event ids and trace ids
+      responses:
+        "200":
+          description: Successfully returned the list of performance's event ids and trace ids
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PerformanceIds'
+
+
 components:
   schemas:
     ReadingStats:
       required:
-        - num_logins
-        - num_performance_report
+        - login_counts
+        - performance_counts
       properties:
-        num_logins:
+        login_counts:
           type: integer
           example: 500000
-        num_performance_report:
+        performance_counts:
           type: integer
           example: 500000
+      type: object
+
+    LoginIds:
+      required:
+        - event_id
+        - trace_id
+        - event_type
+      properties:
+        event_id:
+          type: string
+          example: PTgWU#YGdxY
+        trace_id:
+          type: string
+          example: 570b25da-a76e-4a30-9e2a-1e2cd780d7ac
+        event_type:
+          type: string
+          example: login
+      type: object
+
+    PerformanceIds:
+      required:
+        - event_id
+        - trace_id
+      properties:
+        event_id:
+          type: string
+          example: af06738a-d19a-4cf3-bb0a-fa450531f556
+        trace_id:
+          type: string
+          example: bf741edd-ba26-4411-b17e-3b4c6f7df6f8
+        event_type:
+          type: string 
+          example: performance
       type: object

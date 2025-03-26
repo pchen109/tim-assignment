@@ -6,19 +6,47 @@ const ANALYZER_API_URL = {
     snow: "http://localhost:8111/lol/login?index=",
     lift: "http://localhost:8111/lol/performance?index="
 }
+const CONSISTENCY_CHECK_URL = "http://localhost:7777/checks"
+
 const getRandomIndex = () => Math.floor(Math.random() * 21);    // b/t 0 and 20
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("consistencyForm").addEventListener("submit", (event) => {
+        event.preventDefault();
+        fetch("http://localhost:7777/update", { method: "POST" })
+            .then((res) => res.json())
+            .then((data) => {
+                document.getElementById("result").innerText = JSON.stringify(data);
+            })
+            .catch((error) => {
+                console.error("Update request failed:", error);
+                updateErrorMessages(error.message);
+            });
+    });
+    setup();
+
+});
+
+
+
 
 // This function fetches and updates the general statistics
 const makeReq = (url, cb) => {
     fetch(url)
-        .then(res => res.json())
-        .then((result) => {
-            console.log("Received data: ", result)
-            cb(result);
-        }).catch((error) => {
-            updateErrorMessages(error.message)
+        .then(res => {
+            console.log(`Fetching: ${url}, Status: ${res.status}`);
+            return res.json();
         })
-}
+        .then((result) => {
+            console.log("Received data: ", result);
+            cb(result);
+        })
+        .catch((error) => {
+            console.error("Fetch failed:", error);
+            updateErrorMessages(error.message);
+        });
+};
 
 const updateCodeDiv = (result, elemId) => document.getElementById(elemId).innerText = JSON.stringify(result)
 
@@ -31,6 +59,7 @@ const getStats = () => {
     makeReq(ANALYZER_API_URL.stats, (result) => updateCodeDiv(result, "analyzer-stats"))
     makeReq(`${ANALYZER_API_URL.snow}${getRandomIndex()}`, (result) => updateCodeDiv(result, "event-login"))
     makeReq(`${ANALYZER_API_URL.lift}${getRandomIndex()}`, (result) => updateCodeDiv(result, "event-performance"))
+    makeReq(CONSISTENCY_CHECK_URL, (result) => updateCodeDiv(result, "all-info"))
 }
 
 const updateErrorMessages = (message) => {

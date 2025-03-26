@@ -5,6 +5,7 @@ info:
   description: Simple API for user login and player performance
   contact:
     email: pchen109@bcit.ca
+
 paths:
   /stats:
     get:
@@ -24,23 +25,24 @@ paths:
                   $ref: '#/components/schemas/ReadingStats'
         '400':
           description: Bad request. Invalid input parameters.
+
 components:
   schemas:
     ReadingStats:
       required:
-        - num_logins
+        - login_counts
+        - performance_counts
         - max_login_streak
-        - num_performance_report
         - max_kills
         - last_updated
       properties:
-        num_logins:
+        login_counts:
           type: integer
           example: 500000
         max_login_streak:
           type: integer
           example: 10
-        num_performance_report:
+        performance_counts:
           type: integer
           example: 500000
         max_kills:

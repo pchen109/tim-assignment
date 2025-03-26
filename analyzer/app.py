@@ -1,15 +1,10 @@
-import connexion
-from connexion import NoContent
-
+import logging.config
 import yaml
 import json
-import logging.config
-
-from datetime import datetime as dt
+import connexion
+from connexion import NoContent
 from pykafka import KafkaClient
-
 from os import path
-
 
 with open("/app/conf/analyzer_config.yml", 'r') as f:
     app_config = yaml.safe_load(f.read())
@@ -23,7 +18,6 @@ logger = logging.getLogger('basicLogger')
 stats_file_path = path.abspath(app_config['datastore']['filename'])
 default_initial_state = app_config['schema']['stat']
 
-
 def get_user_login_info(index):
     client = KafkaClient(hosts=f"{app_config['events']['hostname']}:{app_config['events']['port']}")
     topic = client.topics[str.encode('events')]
@@ -33,7 +27,9 @@ def get_user_login_info(index):
     for msg in consumer:
         message = msg.value.decode("utf-8")
         data = json.loads(message)
-        logger.info("Message: %s" % msg)
+        logger.info(f"WHOLE MESSAGE: {data}")
+        logger.info("Age: %s" % msg)
+        print(f"WHOLE MESSAGE: {data}")
     # Look for the index requested and return the payload with 200 status code
         payload = data["payload"]
         if data["type"] == "user_login":
@@ -72,16 +68,18 @@ def get_stats():
     else:
         stats = {}
 
-    stats["num_performance_report"] = 0
-    stats["num_logins"] = 0
+    stats["performance_counts"] = 0
+    stats["login_counts"] = 0
+    logger.debug(f"Updated stats: {json.dumps(stats, indent=4)}")
+    
     for msg in consumer:
         message = msg.value.decode("utf-8")
         data = json.loads(message)
         logger.info("Message: %s" % msg)
         if data["type"] == "user_login":
-            stats["num_logins"] += 1
+            stats["login_counts"] += 1
         if data["type"] == "player_performance":
-            stats["num_performance_report"] += 1
+            stats["performance_counts"] += 1
     
     logger.debug(f"Updated stats: {json.dumps(stats, indent=4)}")
 
@@ -100,12 +98,8 @@ app.add_api("openapi.yml",
             validate_responses=True
             )
 
-
-
 from connexion.middleware import MiddlewarePosition
 from starlette.middleware.cors import CORSMiddleware
-
-# app = FlaskApp(__name__)
 
 app.add_middleware(
     CORSMiddleware,
@@ -116,7 +110,30 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
+### Assignment - Get IDS #####################################################
+def get_ids(type, id_name):
+    client = KafkaClient(hosts="kafka:9092")
+    topic = client.topics[str.encode('events')]
+    consumer = topic.get_simple_consumer(reset_offset_on_start=True, consumer_timeout_ms=1000)
 
+    ids = []
+    for bin in consumer:
+        msg = bin.value.decode("utf-8")
+        data = json.loads(msg)
+
+        if data["type"] == type:
+            ids.append({
+                "event_id": data["payload"][id_name],
+                "trace_id": data["payload"]["trace_id"],
+                "event_type": type
+            })
+    
+    return ids, 200
+def get_login_ids():
+    return get_ids("user_login", "user_id")
+def get_performacne_ids():
+    return get_ids("player_performance", "match_id")
+##############################################################################
 
 if __name__ == '__main__':
     app.run(port=8111, host="0.0.0.0")

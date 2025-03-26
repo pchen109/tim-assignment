@@ -1,4 +1,4 @@
 {
-    "num_performance_report": 80,
-    "num_logins": 80
+    "performance_counts": 80,
+    "login_counts": 80
 }

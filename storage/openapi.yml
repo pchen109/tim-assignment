@@ -37,21 +37,7 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/UserLogin"
-    # post:
-    #   summary: reports user login information
-    #   description: Adds a new user login report to the system
-    #   operationId: app.report_user_login_info
-    #   requestBody:
-    #     description: user login report to add
-    #     content:
-    #       application/json:
-    #         schema:
-    #           $ref: '#/components/schemas/UserLogin'
-    #   responses:
-    #     "201":
-    #       description: item created
-    #     "400":
-    #       description: "invalid input, object invalid"
+
   /lol/performance:
     get:
       tags:
@@ -83,21 +69,51 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/PlayerPerformance"
-    # post:
-    #   summary: reports player's KDA and gamelength
-    #   description: Adds a new player performance report to the system
-    #   operationId: app.report_player_performance
-    #   requestBody:
-    #     description: Player performance report to add
-    #     content:
-    #       application/json:
-    #         schema:
-    #           $ref: '#/components/schemas/PlayerPerformance'
-    #   responses:
-    #     "201":
-    #       description: item created
-    #     "400":
-    #       description: "invalid input, object invalid"
+
+  /records:
+    get:
+      summary: returns numbers of each record
+      operationId: app.get_record_numbers
+      description: count number of records
+      responses:
+        "200":
+          description: Successfully returned all record numbers
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RecordNumbers"
+
+  /login_ids:
+    get:
+      summary: returns list of login's event ids and trace ids
+      operationId: app.get_login_ids
+      description: get login's event ids and trace ids
+      responses:
+        "200":
+          description: Successfully returned the list of login's event ids and trace ids
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LoginIds'
+
+  /performance_ids:
+    get:
+      summary: returns list of performance's event ids and trace ids
+      operationId: app.get_performacne_ids
+      description: get performance's event ids and trace ids
+      responses:
+        "200":
+          description: Successfully returned the list of performance's event ids and trace ids
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PerformanceIds'
+
+
 components:
   schemas:
     UserLogin:
@@ -180,3 +196,49 @@ components:
           description: unique trace ID
           format: uuid
           example: 123e4567-e89b-12d3-a456-426614174000
+
+    RecordNumbers:
+      required:
+        - login_counts
+        - performance_counts
+      properties:
+        login_counts:
+          type: integer
+          example: 500000
+        performance_counts:
+          type: integer
+          example: 500000
+      type: object
+
+    LoginIds:
+      required:
+        - event_id
+        - trace_id
+        - event_type
+      properties:
+        event_id:
+          type: string
+          example: PTgWU#YGdxY
+        trace_id:
+          type: string
+          example: 570b25da-a76e-4a30-9e2a-1e2cd780d7ac
+        event_type:
+          type: string
+          example: login
+      type: object
+
+    PerformanceIds:
+      required:
+        - event_id
+        - trace_id
+      properties:
+        event_id:
+          type: string
+          example: af06738a-d19a-4cf3-bb0a-fa450531f556
+        trace_id:
+          type: string
+          example: bf741edd-ba26-4411-b17e-3b4c6f7df6f8
+        event_type:
+          type: string
+          example: performance
+      type: object

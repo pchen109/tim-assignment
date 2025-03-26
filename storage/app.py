@@ -120,6 +120,44 @@ def report_player_performance(body):
 
     return NoContent, 201
 
+
+### Assignment - Get the number of records ###################################
+def get_record_numbers():
+    session = make_session()
+    login_counts = session.query(LoginInfo).count()
+    performance_counts = session.query(PerformanceReport).count()
+    session.close()
+
+    return {
+        "login_counts": login_counts,
+        "performance_counts": performance_counts
+    }
+##############################################################################
+
+### Assignment - Get IDS #####################################################
+def get_ids(table, event_type):
+    session = make_session()
+    id_name = [id_name[0] for id_name in session.query(table.trace_id).all()]
+    trace_id = [trace_id[0] for trace_id in session.query(table.trace_id).all()]
+    session.close()
+
+    list_of_ids = [{"event_id": id_name[i], "trace_id": trace_id[i], "event_type": event_type} for i in range(len(id_name))]
+    return list_of_ids, 200
+# def get_login_ids():
+#     session = make_session()
+#     id_name = [id_name[0] for id_name in session.query(LoginInfo.trace_id).all()]
+#     trace_id = [trace_id[0] for trace_id in session.query(LoginInfo.trace_id).all()]
+#     session.close()
+
+#     list_of_ids = [{"user_id": id_name[i], "trace_id": trace_id[i]} for i in range(len(id_name))]
+#     return list_of_ids, 200
+
+def get_login_ids():
+    return get_ids(LoginInfo, "login")
+def get_performacne_ids():
+    return get_ids(PerformanceReport, "player_performance")
+##############################################################################
+
 app = connexion.App(__name__, specification_dir='./')
 app.add_api("openapi.yml",
             strict_validation=True,

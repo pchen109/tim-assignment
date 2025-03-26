@@ -51,23 +51,20 @@ def populate_stats():
     login_events = event_logger(login_info_url, params, "login_info")
     performance_events = event_logger(performance_report_url, params, "performance_report")
 
-    stats["num_logins"] += len(login_events)
+    stats["login_counts"] += len(login_events)
+    stats["performance_counts"] += len(performance_events)
     stats["max_login_streak"] = max(stats["max_login_streak"], new_record_value(login_events, "login_streak"))
-    stats["num_performance_report"] += len(performance_events)
     stats["max_kills"] = max(stats["max_kills"], new_record_value(performance_events, "kills"))
     stats["last_updated"] = end_timestamp
 
     logger.debug(f"Updated stats: {json.dumps(stats, indent=4)}")
 
-    # with open(stats_file_path, "w") as fp:
-    #     json.dump(stats, fp, indent=4)
     with open("/app/data/output.json", "w") as fp:
         json.dump(stats, fp, indent=4)
 
     logger.info("Beep boop! Updating completed. 🤖✅")
 
 def event_logger(url, params, event_type):
-    # response = requests.get(url, params=params)
     response = httpx.get(url, params=params)
     events = response.json()
 
@@ -101,8 +98,6 @@ app.add_api("openapi.yaml",
             validate_responses=True
             )
 
-
-
 from connexion.middleware import MiddlewarePosition
 from starlette.middleware.cors import CORSMiddleware
 
@@ -116,7 +111,6 @@ app.add_middleware(
     allow_methods=["*"],  # Allows all methods
     allow_headers=["*"],  # Allows all headers
 )
-
 
 if __name__ == '__main__':
     init_scheduler()
