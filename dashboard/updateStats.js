@@ -10,9 +10,10 @@
 const PROCESSING_STATS_API_URL = "http://localhost:8100/stats"
 const ANALYZER_API_URL = {
     stats: "http://localhost:8111/stats",
-    snow: "http://localhost:8111/lol/login?index=1",
-    lift: "http://localhost:8111/lol/performance?index=1"
+    snow: "http://localhost:8111/lol/login?index=",
+    lift: "http://localhost:8111/lol/performance?index="
 }
+const getRandomIndex = () => Math.floor(Math.random() * 21);    // b/t 0 and 20
 
 // This function fetches and updates the general statistics
 const makeReq = (url, cb) => {
@@ -35,8 +36,8 @@ const getStats = () => {
     
     makeReq(PROCESSING_STATS_API_URL, (result) => updateCodeDiv(result, "processing-stats"))
     makeReq(ANALYZER_API_URL.stats, (result) => updateCodeDiv(result, "analyzer-stats"))
-    makeReq(ANALYZER_API_URL.snow, (result) => updateCodeDiv(result, "event-login"))
-    makeReq(ANALYZER_API_URL.lift, (result) => updateCodeDiv(result, "event-performance"))
+    makeReq(`${ANALYZER_API_URL.snow}${getRandomIndex()}`, (result) => updateCodeDiv(result, "event-login"))
+    makeReq(`${ANALYZER_API_URL.lift}${getRandomIndex()}`, (result) => updateCodeDiv(result, "event-performance"))
 }
 
 const updateErrorMessages = (message) => {
