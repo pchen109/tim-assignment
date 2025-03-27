@@ -118,7 +118,8 @@ services:
       - ./logs/consistency_check.log:/app/logs/consistency_check.log
       - ./conf/log_config.yml:/app/conf/log_config.yml
       - ./conf/consistency_check_config.yml:/app/conf/consistency_check_config.yml
-      - ./consistency_check/consistency_check_output.json:/app/consistency_check_output.json
+      # - ./consistency_check/consistency_check_output.json:/app/consistency_check_output.json
+      - ./data/consistency_check/output.json:/app/data/output.json
     depends_on:
       - storage
       - analyzer
