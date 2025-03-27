@@ -9,6 +9,10 @@ ansible-playbook -i "/mnt/d/OneDrive - BCIT/4.2 - A3855 - Architecture/Lab/Lab-9
 ansible-playbook -i localhost, your_playbook.yml -e "instance_ip=$(terraform output -raw instance_ip)"
 
 ### Use IP Dynamically (USE THIS ONE!!!)
+###### Lab9-redo
+ansible-playbook -i "/mnt/d/OneDrive - BCIT/4.2 - A3855 - Architecture/Lab/Lab-9-redo/ansible/inventory/aws_ec2.yml"  "/mnt/d/OneDrive - BCIT/4.2 - A3855 - Architecture/Lab/Lab-9-redo/ansible/main.yml" -e "instance_ip=$(cd '/mnt/d/OneDrive - BCIT/4.2 - A3855 - Architecture/Lab/Lab-9-redo/terraform' && terraform output -raw instance_ip)"
+
+###### Assignment folder
 ansible-playbook -i "/mnt/d/OneDrive - BCIT/4.2 - A3855 - Architecture/Lab/Lab-9-redo/ansible/inventory/aws_ec2.yml"  "/mnt/d/OneDrive - BCIT/4.2 - A3855 - Architecture/Lab/Lab-9-redo/ansible/main.yml" -e "instance_ip=$(cd '/mnt/d/OneDrive - BCIT/4.2 - A3855 - Architecture/Lab/Lab-9-redo/terraform' && terraform output -raw instance_ip)"
 
 ### Kafka Data Example 

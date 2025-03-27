@@ -3,6 +3,7 @@ conf/log_config_prod.yml
 conf/processing_config_prod.yml
 conf/receiver_config_prod.yml
 conf/storage_config_prod.yml
+conf/consistency_check_config_prod.yml
 data
 logs
 scripts

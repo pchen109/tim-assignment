@@ -17,3 +17,5 @@ EXPOSE 7777
 
 ENTRYPOINT [ "python3" ]
 CMD [ "app.py" ]
+
+
