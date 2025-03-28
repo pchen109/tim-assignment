@@ -57,6 +57,8 @@ wsl --update
 ```
 ### mysql
 ```mysql
+use yapper
+
 INSERT INTO login_info (user_id, region, login_streak, timestamp, date_created, trace_id)
 VALUES ('newUser123', 'NA', 10, '2025-03-27 18:30:00', '2025-03-27 18:30:00', 'new-trace-id-1234');
 
