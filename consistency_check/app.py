@@ -90,7 +90,7 @@ def run_consistency_checks():
     return {"processing_time_ms": processing_time_ms}
 
 def get_checks():
-    if not path.exists("/app/data/output.json"):
+    if not path.exists("/app/data/output.json") or path.getsize("/app/data/output.json") == 0:
         return {"error": "no check has been run yet"}, 404
 
     with open("/app/data/output.json", "r") as fp:
@@ -100,7 +100,6 @@ def get_checks():
         return {"error": "no check or check has issue"}, 404
     
     return response, 200
-
 
 app = connexion.App(__name__, specification_dir='./')
 app.add_api("consistency_check.yaml",

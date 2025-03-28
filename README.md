@@ -1,3 +1,69 @@
+### Some commands
+```bash
+ssh-keygen -t ed25519 -f ~/.ssh/tim-lab
+sudo chmod 600 ~/.ssh/tim-lab
+ssh-add ~/.ssh/tim-lab
+```
+```bash
+wsl --update
+```
+### Example processing, analyzer and consistency_check
+```json
+{
+    "login_counts": 209,
+    "max_login_streak": 77,
+    "performance_counts": 213,
+    "max_kills": 20,
+    "last_updated": "2025-03-06T15:30:36-08:00"
+}
+{
+    "last_updated": "2025-03-15T14:30:00Z",
+    "counts": {
+        "db": {
+            "login_counts": 6,
+            "performance_counts": 6
+        },
+        "queue": {
+            "login_counts": 6,
+            "performance_counts": 6
+        },
+        "processing": {
+            "login_counts": 215,
+            "performance_counts": 219
+        }
+    },
+    "missing_in_db": [],
+    "missing_in_queue": []
+}
+{
+    "performance_counts": 80,
+    "login_counts": 80
+}
+```
+### mysql
+```mysql
+INSERT INTO login_info (user_id, region, login_streak, timestamp, date_created, trace_id)
+VALUES ('newUser123', 'NA', 10, '2025-03-27 18:30:00', '2025-03-27 18:30:00', 'new-trace-id-1234');
+
+INSERT INTO performance_report (user_id, match_id, kills, deaths, assists, timestamp, game_length, date_created, trace_id)
+VALUES ('newUser456', 'abcd1234-5678-90ef-ghij-1234567890kl', 10, 5, 7, '2025-03-27 18:30:00', 1500, '2025-03-27 18:30:00', 'new-trace-id-5678');
+
+DELETE FROM login_info
+WHERE id = 3;
+
+DELETE FROM performance_report
+WHERE id = 3;
+```
+
+
+
+### Sites
+- http://localhost:8090/records
+- http://localhost:8111/stats
+- http://localhost:8100/stats
+- http://localhost:80
+
+# others
 ansible-playbook -i "/mnt/d/OneDrive - BCIT/4.2 - A3855 - Architecture/Lab/Lab-9-redo/ansible/inventory/aws_ec2.yml"  "/mnt/d/OneDrive - BCIT/4.2 - A3855 - Architecture/Lab/Lab-9-redo/ansible/main.yml"
 
 ### Run this to avoide ignoring config file b/c of world-wide permission

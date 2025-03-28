@@ -62,12 +62,7 @@ def get_stats():
     topic = client.topics[str.encode('events')]
     consumer = topic.get_simple_consumer(reset_offset_on_start=True, consumer_timeout_ms=1000)
 
-    if path.exists(stats_file_path):
-        with open(stats_file_path, "r") as fp:
-            stats = json.load(fp)
-    else:
-        stats = {}
-
+    stats = {}
     stats["performance_counts"] = 0
     stats["login_counts"] = 0
     logger.debug(f"Updated stats: {json.dumps(stats, indent=4)}")
@@ -82,9 +77,6 @@ def get_stats():
             stats["performance_counts"] += 1
     
     logger.debug(f"Updated stats: {json.dumps(stats, indent=4)}")
-
-    with open(stats_file_path, "w") as fp:
-        json.dump(stats, fp, indent=4)
 
     logger.info("Beep boop! Updating completed. 🤖✅")
     if consumer:

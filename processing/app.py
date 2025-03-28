@@ -32,13 +32,32 @@ def init_scheduler():
     sched.start()
     logger.info("Scheduler started!")
 
+
+default_initial_state = {
+    "login_counts": 0,
+    "max_login_streak": 0,
+    "performance_counts": 0,
+    "max_kills": 0,
+    "last_updated": "1999-01-01T12:00:00-08:00"
+}
+file_path = "/app/data/output.json"
+
+def load_stats(fp):
+    if path.exists(fp) and path.getsize(fp) > 0:
+        try:
+            with open(fp, "r") as fp:
+                stats = json.load(fp)
+        except (json.JSONDecodeError, KeyError) as e:
+            logger.error(f"Error reading file or missing keys: {e}")
+            return default_initial_state
+    else:
+        logger.warning(f"File not found or empty, using default values for {fp}.")
+        return default_initial_state
+    return stats
+
 def populate_stats():
     logger.info("Beep boop! Updating data... 🤖")
-    if path.exists("/app/data/output.json"):
-        with open("/app/data/output.json", "r") as fp:
-            stats = json.load(fp)
-    else:
-        stats = default_initial_state
+    stats = load_stats("/app/data/output.json")
     
     start_timestamp = stats["last_updated"]
     end_timestamp = dt.now().strftime("%Y-%m-%dT%H:%M:%S-08:00")

@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
         fetch("http://localhost:7777/update", { method: "POST" })
             .then((res) => res.json())
             .then((data) => {
-                document.getElementById("result").innerText = JSON.stringify(data);
+                document.getElementById("result").innerText = JSON.stringify(data, null, 4);
             })
             .catch((error) => {
                 console.error("Update request failed:", error);
@@ -48,7 +48,7 @@ const makeReq = (url, cb) => {
         });
 };
 
-const updateCodeDiv = (result, elemId) => document.getElementById(elemId).innerText = JSON.stringify(result)
+const updateCodeDiv = (result, elemId) => document.getElementById(elemId).innerText = JSON.stringify(result, null, 4)
 
 const getLocaleDateStr = () => (new Date()).toLocaleString()
 
