@@ -41,7 +41,7 @@ services:
       - ./logs/processing.log:/app/logs/processing.log
       - ./conf/log_config.yml:/app/conf/log_config.yml
       - ./conf/processing_config.yml:/app/conf/processing_config.yml
-      - ./data/processing/output.json:/app/data/output.json
+      - ./data/processing/output.json:/app/data/processing/output.json
     depends_on:
       - storage
     ports:
@@ -119,7 +119,7 @@ services:
       - ./conf/log_config.yml:/app/conf/log_config.yml
       - ./conf/consistency_check_config.yml:/app/conf/consistency_check_config.yml
       # - ./consistency_check/consistency_check_output.json:/app/consistency_check_output.json
-      - ./data/consistency_check/output.json:/app/data/output.json
+      - ./data/consistency_check/output.json:/app/data/consistency_check/output.json
     depends_on:
       - storage
       - analyzer

@@ -2,7 +2,22 @@
 ```bash
 ssh-keygen -t ed25519 -f ~/.ssh/tim-lab
 sudo chmod 600 ~/.ssh/tim-lab
+
+eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/tim-lab
+ssh -T git@github.com
+
+chmod +x delete_lab_key import_lab_key
+
+sudo apt update
+sudo apt install python3-pip
+
+
+ansible-inventory -i ./inventory/aws_ec2.yml --list
+sudo apt-get install python3-boto3 python3-botocore
+
+ansible-playbook -i ./inventory/aws_ec2.yml main.yml -e "instance_ip=$(cd '/home/kekw/tim-lab
+/tim-assignment/terraform' && terraform output -raw instance_ip)"
 ```
 ```bash
 wsl --update
@@ -55,7 +70,8 @@ DELETE FROM performance_report
 WHERE id = 3;
 ```
 
-
+### Ansible Playbook
+ansible-playbook -i /home/kekw/tim-lab/tim-assignment/ansible/inventory/aws_ec2.yml  main.yml -e "instance_ip=$(cd '/home/kekw/tim-lab/tim-assignment/terraform' && terraform output -raw instance_ip)"
 
 ### Sites
 - http://localhost:8090/records

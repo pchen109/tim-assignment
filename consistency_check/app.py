@@ -74,7 +74,7 @@ def run_consistency_checks():
         "missing_in_queue": events_missing_in_queue,
     }
 
-    with open("/app/data/output.json", "w") as fp:
+    with open("/app/data/consistency_check/output.json", "w") as fp:
         json.dump(output, fp, indent=4)
 
     processing_time_ms = math.ceil((time.time() - time_start) * 1000)
@@ -90,10 +90,10 @@ def run_consistency_checks():
     return {"processing_time_ms": processing_time_ms}
 
 def get_checks():
-    if not path.exists("/app/data/output.json") or path.getsize("/app/data/output.json") == 0:
+    if not path.exists("/app/data/consistency_check/output.json") or path.getsize("/app/data/consistency_check/output.json") == 0:
         return {"error": "no check has been run yet"}, 404
 
-    with open("/app/data/output.json", "r") as fp:
+    with open("/app/data/consistency_check/output.json", "r") as fp:
         response = json.load(fp)
 
     if "last_updated" not in response:

@@ -40,7 +40,7 @@ default_initial_state = {
     "max_kills": 0,
     "last_updated": "1999-01-01T12:00:00-08:00"
 }
-file_path = "/app/data/output.json"
+file_path = "/app/data/processing/output.json"
 
 def load_stats(fp):
     if path.exists(fp) and path.getsize(fp) > 0:
@@ -57,7 +57,7 @@ def load_stats(fp):
 
 def populate_stats():
     logger.info("Beep boop! Updating data... 🤖")
-    stats = load_stats("/app/data/output.json")
+    stats = load_stats("/app/data/processing/output.json")
     
     start_timestamp = stats["last_updated"]
     end_timestamp = dt.now().strftime("%Y-%m-%dT%H:%M:%S-08:00")
@@ -78,7 +78,7 @@ def populate_stats():
 
     logger.debug(f"Updated stats: {json.dumps(stats, indent=4)}")
 
-    with open("/app/data/output.json", "w") as fp:
+    with open("/app/data/processing/output.json", "w") as fp:
         json.dump(stats, fp, indent=4)
 
     logger.info("Beep boop! Updating completed. 🤖✅")
@@ -99,11 +99,11 @@ def new_record_value(events, key):
 def get_stats():
     logger.info("GET /stats request received.")
 
-    if not path.exists("/app/data/output.json"):
+    if not path.exists("/app/data/processing/output.json"):
         logger.error("Statistics file not found.")
         return NoContent, 404
 
-    with open("/app/data/output.json", "r") as file:
+    with open("/app/data/processing/output.json", "r") as file:
         stats = json.load(file) 
     
     logger.debug(f"Statistics: {json.dumps(stats, indent=4)}")
