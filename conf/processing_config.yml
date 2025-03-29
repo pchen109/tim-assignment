@@ -7,11 +7,9 @@ config:
   conf_log_file: conf_log.yaml
 eventstores:
   login_info:
-    # url: http://storage:8090/lol/login
-    url: http://storage/storage/lol/login
+    url: http://storage:8090/storage/lol/login
   performance_report:
-    # url: http://storage:8090/lol/performance
-    url: http://storage/storage/lol/performance
+    url: http://storage:8090/storage/lol/performance
 schema:
   stat: {
             "num_logins": 0,

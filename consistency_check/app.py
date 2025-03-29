@@ -27,25 +27,15 @@ with open("/app/conf/consistency_check_config.yml", 'r') as f:
 def run_consistency_checks():
     time_start = time.time()
     logger.info("Consistency checks starts ... 💀")
-    processing_json = httpx.get("http://processing/processing/stats").json()
+    processing_json = httpx.get("http://processing:8100/processing/stats").json()
     
-    queue_counts_json = httpx.get("http://analyzer/analyzer/stats").json()
-    queue_login_ids_json = httpx.get("http://analyzer/analyzer/login_ids").json()
-    queue_perf_ids_json = httpx.get("http://analyzer/analyzer/performance_ids").json()
+    queue_counts_json = httpx.get("http://analyzer:8111/analyzer/stats").json()
+    queue_login_ids_json = httpx.get("http://analyzer:8111/analyzer/login_ids").json()
+    queue_perf_ids_json = httpx.get("http://analyzer:8111/analyzer/performance_ids").json()
     
-    db_counts_json = httpx.get("http://storage/storage/records").json()
-    db_login_ids_json = httpx.get("http://storage/storage/login_ids").json()
-    db_perf_ids_json = httpx.get("http://storage/storage/performance_ids").json()
-    
-    # processing_json = httpx.get("http://processing:8100/stats").json()
-    
-    # queue_counts_json = httpx.get("http://analyzer:8111/stats").json()
-    # queue_login_ids_json = httpx.get("http://analyzer:8111/login_ids").json()
-    # queue_perf_ids_json = httpx.get("http://analyzer:8111/performance_ids").json()
-    
-    # db_counts_json = httpx.get("http://storage:8090/records").json()
-    # db_login_ids_json = httpx.get("http://storage:8090/login_ids").json()
-    # db_perf_ids_json = httpx.get("http://storage:8090/performance_ids").json()
+    db_counts_json = httpx.get("http://storage:8090/storage/records").json()
+    db_login_ids_json = httpx.get("http://storage:8090/storage/login_ids").json()
+    db_perf_ids_json = httpx.get("http://storage:8090/storage/performance_ids").json()
 
     events_missing_in_queue = []
     events_missing_in_db = []
@@ -94,9 +84,6 @@ def run_consistency_checks():
         Missing in Queue: {len(events_missing_in_queue)} 
         👻🦉🐢""")
 
-    
-    # response = json.dumps({"processing_time_ms": processing_time_ms}, indent=4)
-    # return [response], 200
     return {"processing_time_ms": processing_time_ms}
 
 def get_checks():

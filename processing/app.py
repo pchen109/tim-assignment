@@ -11,7 +11,6 @@ import httpx
 
 conf_app_load = yaml.safe_load(open("/app/conf/processing_config.yml"))
 stats_file_path = path.abspath(conf_app_load['datastore']['filename'])
-# conf_log_path = path.abspath(conf_app_load['config']['conf_log_file'])
 login_info_url = conf_app_load['eventstores']['login_info']['url']
 performance_report_url = conf_app_load['eventstores']['performance_report']['url']
 repeating_interval = conf_app_load['scheduler']['interval']

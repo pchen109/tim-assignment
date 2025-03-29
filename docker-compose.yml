@@ -13,8 +13,6 @@ services:
       - ./conf/receiver_config.yml:/app/conf/receiver_config.yml
     depends_on:
       - kafka
-    # ports:
-      # - '8080:8080'
   storage:
     build:
       context: storage
@@ -30,16 +28,13 @@ services:
         condition: service_healthy
       kafka:
         condition: service_started
-    ### this port is for testing → need to be deleted → shouldn't expose???
-    # ports:
-    #   - '8090:8090'
   processing:
     build:
       context: processing
       dockerfile: Dockerfile
     environment:
       - TZ=America/Los_Angeles
-      - CORS_ALLOW_ALL=no
+      - CORS_ALLOW_ALL=yes
     volumes:
       - ./logs/processing.log:/app/logs/processing.log
       - ./conf/log_config.yml:/app/conf/log_config.yml
@@ -47,23 +42,23 @@ services:
       - ./data/processing/output.json:/app/data/processing/output.json
     depends_on:
       - storage
-    # ports:
-      # - '8100:8100'
+    ports:
+      - "8100:8100"
   analyzer:
     build:
       context: analyzer
       dockerfile: Dockerfile
     environment:
       - TZ=America/Los_Angeles
-      - CORS_ALLOW_ALL=no
+      - CORS_ALLOW_ALL=yes
     volumes:
       - ./logs/analyzer.log:/app/logs/analyzer.log
       - ./conf/log_config.yml:/app/conf/log_config.yml
       - ./conf/analyzer_config.yml:/app/conf/analyzer_config.yml
     depends_on:
       - kafka
-    # ports:
-      # - '8111:8111'
+    ports:
+      - "8111:8111"
   zookeeper:
     image: wurstmeister/zookeeper
     volumes:
@@ -126,14 +121,12 @@ services:
       - ./logs/consistency_check.log:/app/logs/consistency_check.log
       - ./conf/log_config.yml:/app/conf/log_config.yml
       - ./conf/consistency_check_config.yml:/app/conf/consistency_check_config.yml
-      # - ./consistency_check/consistency_check_output.json:/app/consistency_check_output.json
       - ./data/consistency_check/output.json:/app/data/consistency_check/output.json
     depends_on:
       - storage
       - analyzer
       - processing
-    # ports:
-      # - '7777:7777'
-
+    ports:
+      - "7777:7777"
 volumes:
   zookeeper_data:

@@ -1,20 +1,10 @@
-/* UPDATE THESE VALUES TO MATCH YOUR SETUP */
-
-// const PROCESSING_STATS_API_URL = "http://localhost:8100/stats"
-// const ANALYZER_API_URL = {
-//     stats: "http://localhost:8111/stats",
-//     snow: "http://localhost:8111/lol/login?index=",
-//     lift: "http://localhost:8111/lol/performance?index="
-// }
-// const CONSISTENCY_CHECK_URL = "http://localhost:7777/checks"
-
-const PROCESSING_STATS_API_URL = "http://localhost/processing/stats"
+const PROCESSING_STATS_API_URL = "http://localhost:8100/processing/stats"
 const ANALYZER_API_URL = {
-    stats: "http://localhost/analyzer/stats",
-    snow: "http://localhost/analyzer/lol/login?index=",
-    lift: "http://localhost/analyzer/lol/performance?index="
+    stats: "http://localhost:8111/analyzer/stats",
+    snow: "http://localhost:8111/analyzer/lol/login?index=",
+    lift: "http://localhost:8111/analyzer/lol/performance?index="
 }
-const CONSISTENCY_CHECK_URL = "http://localhost/consistency_check/checks"
+const CONSISTENCY_CHECK_URL = "http://localhost:7777/consistency_check/checks"
 
 
 const getRandomIndex = () => Math.floor(Math.random() * 21);    // b/t 0 and 20
@@ -23,7 +13,7 @@ const getRandomIndex = () => Math.floor(Math.random() * 21);    // b/t 0 and 20
 document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("consistencyForm").addEventListener("submit", (event) => {
         event.preventDefault();
-        fetch("http://localhost/consistency_check/update", { method: "POST" })
+        fetch("http://localhost:7777/consistency_check/update", { method: "POST" })
             .then((res) => res.json())
             .then((data) => {
                 document.getElementById("result").innerText = JSON.stringify(data, null, 4);
