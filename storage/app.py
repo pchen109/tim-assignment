@@ -160,6 +160,7 @@ def get_performacne_ids():
 
 app = connexion.App(__name__, specification_dir='./')
 app.add_api("openapi.yml",
+            base_path="/storage",
             strict_validation=True,
             validate_responses=True
             )

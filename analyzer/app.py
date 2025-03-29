@@ -4,7 +4,7 @@ import json
 import connexion
 from connexion import NoContent
 from pykafka import KafkaClient
-from os import path
+from os import path, environ
 
 with open("/app/conf/analyzer_config.yml", 'r') as f:
     app_config = yaml.safe_load(f.read())
@@ -86,6 +86,7 @@ def get_stats():
 
 app = connexion.App(__name__, specification_dir='./')
 app.add_api("openapi.yml",
+            base_path="/analyzer",
             strict_validation=True,
             validate_responses=True
             )
@@ -93,14 +94,15 @@ app.add_api("openapi.yml",
 from connexion.middleware import MiddlewarePosition
 from starlette.middleware.cors import CORSMiddleware
 
-app.add_middleware(
-    CORSMiddleware,
-    position=MiddlewarePosition.BEFORE_EXCEPTION,
-    allow_origins=["*"],  # Allows all origins (INSECURE for production!)
-    allow_credentials=True,
-    allow_methods=["*"],  # Allows all methods
-    allow_headers=["*"],  # Allows all headers
-)
+if "CORS_ALLOW_ALL" in environ and environ["CORS_ALLOW_ALL"] == "yes":
+    app.add_middleware(
+        CORSMiddleware,
+        position=MiddlewarePosition.BEFORE_EXCEPTION,
+        allow_origins=["*"],  # Allows all origins (INSECURE for production!)
+        allow_credentials=True,
+        allow_methods=["*"],  # Allows all methods
+        allow_headers=["*"],  # Allows all headers
+    )
 
 ### Assignment - Get IDS #####################################################
 def get_ids(type, id_name):

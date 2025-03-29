@@ -47,6 +47,7 @@ def report_player_performance(body):
 
 app = connexion.App(__name__, specification_dir='./')
 app.add_api("openapi.yml",
+            base_path="/receiver",
             strict_validation=True,
             validate_responses=True
             )
