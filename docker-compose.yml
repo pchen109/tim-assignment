@@ -1,5 +1,7 @@
 services:
   receiver:
+    deploy:
+      replicas: 3
     build:
       context: receiver
       dockerfile: Dockerfile
@@ -11,8 +13,8 @@ services:
       - ./conf/receiver_config.yml:/app/conf/receiver_config.yml
     depends_on:
       - kafka
-    ports:
-      - '8080:8080'
+    # ports:
+      # - '8080:8080'
   storage:
     build:
       context: storage
@@ -45,8 +47,8 @@ services:
       - ./data/processing/output.json:/app/data/processing/output.json
     depends_on:
       - storage
-    ports:
-      - '8100:8100'
+    # ports:
+      # - '8100:8100'
   analyzer:
     build:
       context: analyzer
@@ -60,8 +62,8 @@ services:
       - ./conf/analyzer_config.yml:/app/conf/analyzer_config.yml
     depends_on:
       - kafka
-    ports:
-      - '8111:8111'
+    # ports:
+      # - '8111:8111'
   zookeeper:
     image: wurstmeister/zookeeper
     volumes:
@@ -130,8 +132,8 @@ services:
       - storage
       - analyzer
       - processing
-    ports:
-      - '7777:7777'
+    # ports:
+      # - '7777:7777'
 
 volumes:
   zookeeper_data:
