@@ -1,4 +1,4 @@
-from os import path
+from os import path, environ
 from connexion import NoContent
 from datetime import datetime as dt
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -113,6 +113,7 @@ def get_stats():
 
 app = connexion.App(__name__, specification_dir='./')
 app.add_api("openapi.yaml",
+            base_path="/processing",
             strict_validation=True,
             validate_responses=True
             )
@@ -120,16 +121,15 @@ app.add_api("openapi.yaml",
 from connexion.middleware import MiddlewarePosition
 from starlette.middleware.cors import CORSMiddleware
 
-# app = FlaskApp(__name__)
-
-app.add_middleware(
-    CORSMiddleware,
-    position=MiddlewarePosition.BEFORE_EXCEPTION,
-    allow_origins=["*"],  # Allows all origins (INSECURE for production!)
-    allow_credentials=True,
-    allow_methods=["*"],  # Allows all methods
-    allow_headers=["*"],  # Allows all headers
-)
+if "CORS_ALLOW_ALL" in environ and environ["CORS_ALLOW_ALL"] == "yes":
+    app.add_middleware(
+        CORSMiddleware,
+        position=MiddlewarePosition.BEFORE_EXCEPTION,
+        allow_origins=["*"],  # Allows all origins (INSECURE for production!)
+        allow_credentials=True,
+        allow_methods=["*"],  # Allows all methods
+        allow_headers=["*"],  # Allows all headers
+    )
 
 if __name__ == '__main__':
     init_scheduler()

@@ -29,14 +29,15 @@ services:
       kafka:
         condition: service_started
     ### this port is for testing → need to be deleted → shouldn't expose???
-    ports:
-      - '8090:8090'
+    # ports:
+    #   - '8090:8090'
   processing:
     build:
       context: processing
       dockerfile: Dockerfile
     environment:
       - TZ=America/Los_Angeles
+      - CORS_ALLOW_ALL=no
     volumes:
       - ./logs/processing.log:/app/logs/processing.log
       - ./conf/log_config.yml:/app/conf/log_config.yml
@@ -52,6 +53,7 @@ services:
       dockerfile: Dockerfile
     environment:
       - TZ=America/Los_Angeles
+      - CORS_ALLOW_ALL=no
     volumes:
       - ./logs/analyzer.log:/app/logs/analyzer.log
       - ./conf/log_config.yml:/app/conf/log_config.yml
@@ -108,12 +110,16 @@ services:
     depends_on:
       - processing
       - analyzer
+      - storage
+      - receiver
+      - consistency_check
   consistency_check:
     build:
       context: consistency_check
       dockerfile: Dockerfile
     environment:
       - TZ=America/Los_Angeles
+      - CORS_ALLOW_ALL=yes
     volumes:
       - ./logs/consistency_check.log:/app/logs/consistency_check.log
       - ./conf/log_config.yml:/app/conf/log_config.yml
