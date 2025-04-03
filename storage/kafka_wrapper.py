@@ -1,4 +1,4 @@
-from time import time
+import time
 import random
 import logging
 import logging.config   
