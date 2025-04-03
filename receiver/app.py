@@ -18,6 +18,11 @@ with open("/app/conf/log_config.yml", "r") as f:
     logging.config.dictConfig(LOG_CONFIG)
 logger = logging.getLogger('basicLogger')
 
+# initialize Kafka ONCE 
+client = KafkaClient(hosts=f"{app_config['events']['hostname']}:{app_config['events']['port']}")
+topic = client.topics[str.encode('events')]
+producer = topic.get_sync_producer()
+
 def report_event(body, event_type):
     trace_id = str(uuid.uuid4())
     body["trace_id"] = trace_id
@@ -30,9 +35,6 @@ def report_event(body, event_type):
         "payload": body
     }
 
-    client = KafkaClient(hosts=f"{app_config['events']['hostname']}:{app_config['events']['port']}")
-    topic = client.topics[str.encode('events')]
-    producer = topic.get_sync_producer()
     producer.produce(json.dumps(msg).encode('utf-8'))
 
     logger.info(f"Response for event {event_type} (id: {trace_id}) has status 201")
