@@ -64,14 +64,17 @@ class KafkaWrapper:
             self.producer = None
             return False
         
-    def messages(self):
+    def produce(self, message):
         """Generator method that catches exceptions in the producer loop"""
         if self.producer is None:
             self.connect()
         while True:
+            if self.producer is None:
+                logger.error("Producer not initialized")
+                return
             try:
-                for msg in self.producer:
-                    yield msg
+                self.producer.produce(message.encode('utf-8'))
+                logger.info("Message produced successfully")
             except KafkaException as e:
                 msg = f"Kafka issue in comsumer: {e}"
                 logger.warning(msg)
