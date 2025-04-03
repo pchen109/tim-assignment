@@ -21,10 +21,10 @@ with open("/app/conf/log_config.yml", "r") as f:
 logger = logging.getLogger('basicLogger')
 
 # initialize Kafka ONCE 
-client = KafkaClient(hosts=f"{app_config['events']['hostname']}:{app_config['events']['port']}")
-topic = client.topics[str.encode('events')]
-producer = topic.get_sync_producer()
-kafka_wrapper = KafkaWrapper("kafka:9092", b"events")
+# client = KafkaClient(hosts=f"{app_config['events']['hostname']}:{app_config['events']['port']}")
+# topic = client.topics[str.encode('events')]
+# producer = topic.get_sync_producer()
+producer = KafkaWrapper("kafka:9092", b"events")
 
 def report_event(body, event_type):
     trace_id = str(uuid.uuid4())
