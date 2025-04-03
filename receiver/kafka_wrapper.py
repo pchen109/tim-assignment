@@ -73,11 +73,15 @@ class KafkaWrapper:
                 logger.error("Producer not initialized")
                 return
             try:
-                self.producer.produce(message.encode('utf-8'))
+                # Check if the message is a string, and if so, encode it
+                if isinstance(message, str):
+                    message = message.encode('utf-8')
+                # Now, message is guaranteed to be in bytes
+                self.producer.produce(message)
                 logger.info("Message produced successfully")
             except KafkaException as e:
-                msg = f"Kafka issue in comsumer: {e}"
-                logger.warning(msg)
-                self.client = None
-                self.producer = None
-                self.connect()
+                msg = f"Error occurred while producing message: {e}"
+                logger.error(msg)
+                self.client = None  # Optionally reset client if necessary
+                self.producer = None  # Reset producer in case of error
+                self.connect() 
