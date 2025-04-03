@@ -24,16 +24,15 @@ with open("/app/conf/log_config.yml", "r") as f:
     LOG_CONFIG["handlers"]["file"]["filename"] = "logs/storage.log"
     logging.config.dictConfig(LOG_CONFIG)
 
-def process_messages():
-    hostname = f"{app_config['events']['hostname']}:{app_config['events']['port']}"
-    client = KafkaClient(hosts=hostname)
-    topic = client.topics[str.encode("events")]
+hostname = f"{app_config['events']['hostname']}:{app_config['events']['port']}"
+client = KafkaClient(hosts=hostname)
+topic = client.topics[str.encode("events")]
+consumer = topic.get_simple_consumer(consumer_group=b'event_group',
+    reset_offset_on_start=False,
+    auto_offset_reset=OffsetType.LATEST
+    )
 
-    # Consumer group that only read NEW messages b/c of the OffsetType.LATEST
-    consumer = topic.get_simple_consumer(consumer_group=b'event_group',
-        reset_offset_on_start=False,
-        auto_offset_reset=OffsetType.LATEST
-        )
+def process_messages():
     
     # Loop to consume messages and store them in the database
     for msg in consumer:
