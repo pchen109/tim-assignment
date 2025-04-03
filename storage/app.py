@@ -16,6 +16,8 @@ from pykafka import KafkaClient
 from pykafka.common import OffsetType
 import json
 
+from kafka_wrapper import KafkaWrapper
+
 with open("/app/conf/storage_config.yml", 'r') as f:
     app_config = yaml.safe_load(f.read())
 
@@ -25,15 +27,18 @@ with open("/app/conf/log_config.yml", "r") as f:
     logging.config.dictConfig(LOG_CONFIG)
 
 hostname = f"{app_config['events']['hostname']}:{app_config['events']['port']}"
-client = KafkaClient(hosts=hostname)
-topic = client.topics[str.encode("events")]
-consumer = topic.get_simple_consumer(consumer_group=b'event_group',
-    reset_offset_on_start=False,
-    auto_offset_reset=OffsetType.LATEST
-    )
+
+kafka_wrapper = KafkaWrapper("kafka:9092", b"events")
+# client = KafkaClient(hosts=hostname)
+# topic = client.topics[str.encode("events")]
+# consumer = topic.get_simple_consumer(consumer_group=b'event_group',
+#     reset_offset_on_start=False,
+#     auto_offset_reset=OffsetType.LATEST
+#     )
 
 def process_messages():
     
+    consumer = kafka_wrapper.message()
     # Loop to consume messages and store them in the database
     for msg in consumer:
         msg_str = msg.value.decode('utf-8')
