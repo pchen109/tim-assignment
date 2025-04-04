@@ -68,16 +68,14 @@ class KafkaWrapper:
         """Generator method that catches exceptions in the producer loop"""
         if self.producer is None:
             self.connect()
-        while True:
-            if self.producer is None:
-                logger.error("Producer not initialized")
-                return
-            try:
-                self.producer.produce(message)
-                logger.info("Message produced successfully")
-            except KafkaException as e:
-                msg = f"Error occurred while producing message: {e}"
-                logger.error(msg)
-                self.client = None  # Optionally reset client if necessary
-                self.producer = None  # Reset producer in case of error
-                self.connect() 
+            logger.error("Producer not initialized")
+            return
+        try:
+            self.producer.produce(message)
+            logger.info("Message produced successfully")
+        except KafkaException as e:
+            msg = f"Error occurred while producing message: {e}"
+            logger.error(msg)
+            self.client = None  # Optionally reset client if necessary
+            self.producer = None  # Reset producer in case of error
+            self.connect() 
