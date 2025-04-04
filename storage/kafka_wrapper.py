@@ -58,9 +58,11 @@ class KafkaWrapper:
         try:
             topic = self.client.topics[self.topic]
             self.consumer = topic.get_simple_consumer(
+                consumer_group=b'event_group',
                 reset_offset_on_start=False,
                 auto_offset_reset=OffsetType.LATEST
-            )
+                )
+
         except KafkaException as e:
             msg = f"Make error when making consumer: {e}"
             logger.warning(msg)
