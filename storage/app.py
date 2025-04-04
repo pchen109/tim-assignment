@@ -35,9 +35,10 @@ hostname = f"{app_config['events']['hostname']}:{app_config['events']['port']}"
 #     auto_offset_reset=OffsetType.LATEST
 #     )
 
+consumer = KafkaWrapper("kafka:9092", b"events")
+
 def process_messages():
     
-    consumer = KafkaWrapper("kafka:9092", b"events")
     # Loop to consume messages and store them in the database
     for msg in consumer.messages():
         msg_str = msg.value.decode('utf-8')
