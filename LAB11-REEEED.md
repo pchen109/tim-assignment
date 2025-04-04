@@ -14,3 +14,8 @@ docker system prune -a
 python3 -m venv .venv
 source .venv/bin/activate
 ```
+
+### Clear file with sudo fast
+```
+sudo truncate -s 0 receiver.log
+```
