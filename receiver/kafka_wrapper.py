@@ -64,7 +64,7 @@ class KafkaWrapper:
             self.producer = None
             return False
         
-    def produce(self, message):
+    def message(self, message):
         """Generator method that catches exceptions in the producer loop"""
         if self.producer is None:
             self.connect()
