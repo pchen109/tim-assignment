@@ -68,14 +68,14 @@ class KafkaWrapper:
             self.consumer = None
             return False
         
-    # def commit_offsets(self):
-    #     """Commit the offsets of the consumer"""
-    #     if self.consumer is not None:
-    #         self.consumer.commit_offsets()
-    #         logger.debug("Offsets committed!")
-    #     else:
-    #         logger.warning("Consumer is None, cannot commit offsets.")
-
+    def commit_offsets(self):
+        """Commit the offsets of the consumer"""
+        if self.consumer is not None:
+            self.consumer.commit_offsets()
+            logger.debug("Offsets committed!")
+        else:
+            logger.warning("Consumer is None, cannot commit offsets.")
+            
     def messages(self):
         """Generator method that catches exceptions in the consumer loop"""
         if self.consumer is None:
