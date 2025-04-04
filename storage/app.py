@@ -28,7 +28,6 @@ with open("/app/conf/log_config.yml", "r") as f:
 
 hostname = f"{app_config['events']['hostname']}:{app_config['events']['port']}"
 
-consumer = KafkaWrapper("kafka:9092", b"events")
 # client = KafkaClient(hosts=hostname)
 # topic = client.topics[str.encode("events")]
 # consumer = topic.get_simple_consumer(consumer_group=b'event_group',
@@ -38,6 +37,7 @@ consumer = KafkaWrapper("kafka:9092", b"events")
 
 def process_messages():
     
+    consumer = KafkaWrapper("kafka:9092", b"events")
     # Loop to consume messages and store them in the database
     for msg in consumer.messages():
         msg_str = msg.value.decode('utf-8')
