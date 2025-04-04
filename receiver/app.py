@@ -39,7 +39,8 @@ def report_event(body, event_type):
         "payload": body
     }
 
-    producer.message(json.dumps(msg).encode('utf-8'))
+    producer.messages()
+    producer.produce(json.dumps(msg).encode('utf-8'))
 
     logger.info(f"Response for event {event_type} (id: {trace_id}) has status 201")
 
