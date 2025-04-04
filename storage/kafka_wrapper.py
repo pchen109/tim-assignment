@@ -68,7 +68,7 @@ class KafkaWrapper:
             self.consumer = None
             return False
         
-    def commit_offsets(self):
+    def commit(self):
         """Commit the offsets of the consumer"""
         if self.consumer is not None:
             self.consumer.commit_offsets()

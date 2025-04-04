@@ -51,7 +51,7 @@ def process_messages():
         elif msg["type"] == "player_performance":
             report_player_performance(payload)
 
-        consumer.commit_offsets()
+        consumer.commit()
 
 def setup_kafka_thread():
     t1 = Thread(target=process_messages)
