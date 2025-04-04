@@ -28,18 +28,18 @@ with open("/app/conf/log_config.yml", "r") as f:
 
 hostname = f"{app_config['events']['hostname']}:{app_config['events']['port']}"
 
-consumer = KafkaWrapper(hostname, "events")
-# client = KafkaClient(hosts=hostname)
-# topic = client.topics[str.encode("events")]
-# consumer = topic.get_simple_consumer(consumer_group=b'event_group',
-#     reset_offset_on_start=False,
-#     auto_offset_reset=OffsetType.LATEST
-#     )
+# consumer = KafkaWrapper(hostname, "events")
+client = KafkaClient(hosts=hostname)
+topic = client.topics[str.encode("events")]
+consumer = topic.get_simple_consumer(consumer_group=b'event_group',
+    reset_offset_on_start=False,
+    auto_offset_reset=OffsetType.LATEST
+    )
 
 def process_messages():
     
     # Loop to consume messages and store them in the database
-    for msg in consumer.messages():
+    for msg in consumer:
         msg_str = msg.value.decode('utf-8')
         msg = json.loads(msg_str)
         logger.info("Message: %s" % msg)

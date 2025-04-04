@@ -73,10 +73,6 @@ class KafkaWrapper:
                 logger.error("Producer not initialized")
                 return
             try:
-                # Check if the message is a string, and if so, encode it
-                if isinstance(message, str):
-                    message = message.encode('utf-8')
-                # Now, message is guaranteed to be in bytes
                 self.producer.produce(message)
                 logger.info("Message produced successfully")
             except KafkaException as e:

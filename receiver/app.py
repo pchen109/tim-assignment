@@ -24,7 +24,8 @@ logger = logging.getLogger('basicLogger')
 # client = KafkaClient(hosts=f"{app_config['events']['hostname']}:{app_config['events']['port']}")
 # topic = client.topics[str.encode('events')]
 # producer = topic.get_sync_producer()
-producer = KafkaWrapper(f"{app_config['events']['hostname']}:{app_config['events']['port']}", b"events")
+producer = KafkaWrapper("kafka:9092", "events")
+
 
 def report_event(body, event_type):
     trace_id = str(uuid.uuid4())
