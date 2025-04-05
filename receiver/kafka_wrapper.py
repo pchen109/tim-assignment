@@ -83,4 +83,7 @@ class KafkaWrapper:
         logger.info("Waiting for Kafka to come back online...")
         while not self.make_client() or not self.make_producer():
             logger.debug("Kafka is down, retrying...")
+            self.client = None
+            self.producer = None
+            self.connect()
             time.sleep(5)
