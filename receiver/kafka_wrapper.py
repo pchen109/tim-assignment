@@ -17,7 +17,7 @@ class KafkaWrapper:
         self.client = None
         self.producer = None
         self.connect()
-        
+
     def connect(self):
         """Infinite loop: will keep trying"""
         while True:
@@ -67,14 +67,20 @@ class KafkaWrapper:
         
     def produce(self, message):
         """Produce a message to Kafka, waiting for Kafka if necessary."""
-        if self.producer is None:
-            self.connect()
-        try:
-            self.producer.produce(message)
-            logger.info("Message produced successfully")
-        except KafkaException as e:
-            logger.warning(f"Kafka error when producing message: {e}")
-            # Wait until Kafka is back up and retry
-            self.client = None
-            self.producer = None
-            return False
+        attempts = 0
+        retries = 5
+        while attempts < retries:
+            if self.producer is None:
+                self.connect()
+            try:
+                self.producer.produce(message.encode('utf-8'))
+                logger.info("Message produced successfully")
+                return True
+            except KafkaException as e:
+                logger.warning(f"Kafka error when producing message: {e}")
+                self.client = None
+                self.producer = None
+                attempts += 1
+                time.sleep(1.0)  # Wait before retry
+        logger.error("Failed to produce message after retries")
+        return False
