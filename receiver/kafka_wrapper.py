@@ -74,16 +74,6 @@ class KafkaWrapper:
         except KafkaException as e:
             logger.warning(f"Kafka error when producing message: {e}")
             # Wait until Kafka is back up and retry
-            self.wait_for_kafka()
-            self.produce(message)  
-
-    
-    def wait_for_kafka(self):
-        """Wait until Kafka is available again."""
-        logger.info("Waiting for Kafka to come back online...")
-        while not self.make_client() or not self.make_producer():
-            logger.debug("Kafka is down, retrying...")
             self.client = None
             self.producer = None
-            self.connect()
-            time.sleep(5)
+            return False
