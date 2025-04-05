@@ -10,7 +10,6 @@ from datetime import datetime as dt
 from pykafka import KafkaClient
 from kafka_wrapper import KafkaWrapper
 
-
 with open("/app/conf/receiver_config.yml", 'r') as f:
     app_config = yaml.safe_load(f.read())
 
@@ -25,7 +24,6 @@ logger = logging.getLogger('basicLogger')
 # topic = client.topics[str.encode('events')]
 # producer = topic.get_sync_producer()
 producer = KafkaWrapper("kafka:9092", "events")
-
 
 def report_event(body, event_type):
     trace_id = str(uuid.uuid4())
