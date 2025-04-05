@@ -65,24 +65,22 @@ class KafkaWrapper:
             return False
         
     def produce(self, message):
-        """Produce a message to the Kafka topic"""
+        """Produce a message to Kafka, waiting for Kafka if necessary."""
         if self.producer is None:
             self.connect()
-        self.producer.produce(message)
-        logger.info("Message produced successfully")
+        try:
+            self.producer.produce(message)
+            logger.info("Message produced successfully")
+        except KafkaException as e:
+            logger.warning(f"Kafka error when producing message: {e}")
+            # Wait until Kafka is back up and retry
+            self.wait_for_kafka()
+            self.produce(message)  
 
     
-    def messages(self):
-        """Generator method that catches exceptions in the consumer loop"""
-        if self.consumer is None:
-            self.connect()
-        while True:
-            try:
-                for msg in self.consumer:
-                    yield msg
-            except KafkaException as e:
-                msg = f"Kafka issue in comsumer: {e}"
-                logger.warning(msg)
-                self.client = None
-                self.consumer = None
-                self.connect()
+    def wait_for_kafka(self):
+        """Wait until Kafka is available again."""
+        logger.info("Waiting for Kafka to come back online...")
+        while not self.make_client() or not self.make_producer():
+            logger.debug("Kafka is down, retrying...")
+            time.sleep(5)
