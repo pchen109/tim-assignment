@@ -12,7 +12,8 @@ services:
       - ./conf/log_config.yml:/app/conf/log_config.yml
       - ./conf/receiver_config.yml:/app/conf/receiver_config.yml
     depends_on:
-      - kafka
+      kafka:
+        condition: service_healthy
   storage:
     build:
       context: storage
@@ -27,7 +28,7 @@ services:
       db:
         condition: service_healthy
       kafka:
-        condition: service_started
+        condition: service_healthy
   processing:
     build:
       context: processing
@@ -56,7 +57,8 @@ services:
       - ./conf/log_config.yml:/app/conf/log_config.yml
       - ./conf/analyzer_config.yml:/app/conf/analyzer_config.yml
     depends_on:
-      - kafka
+      kafka:
+        condition: service_healthy
     # ports:
     #   - "8111:8111"
   zookeeper:
@@ -82,6 +84,12 @@ services:
       sh -c "rm -f ./kafka/kafka-logs-kafka/meta.properties && start-kafka.sh"
     depends_on:
       - zookeeper
+    healthcheck:
+      test: ["CMD", "kafka-topics.sh", "--bootstrap-server", "kafka:9092", "--list"]
+      interval: 30s
+      retries: 10
+      start_period: 20s
+      timeout: 10s
   db:
     image: mysql
     restart: always
@@ -93,7 +101,8 @@ services:
     volumes:
       - ./data/database:/var/lib/mysql
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u${MYSQL_USER} -p${MYSQL_PASSWORD} --silent"]
+      # test: ["CMD-SHELL", "mysqladmin ping -h localhost -u${MYSQL_USER} -p${MYSQL_PASSWORD} --silent"]
+      test: ["CMD", "mysql", "-h", "localhost", "-u", "${MYSQL_USER}", "-p${MYSQL_PASSWORD}", "-e", "SELECT 1"]
       interval: 10s
       retries: 5
       start_period: 30s
