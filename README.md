@@ -2,7 +2,12 @@
 ```bash
 ansible-playbook -i ./inventory/aws_ec2.yml main.yml -e "instance_ip=$(cd '../terraform' && terraform output -raw instance_ip)"
 ```
+### Kafka
+```bash
+/opt/kafka/config/server.properties
+kafka-topics.sh --bootstrap-server localhost:9092 --describe --topic events
 
+```
 
 ### SSH
 ```bash
