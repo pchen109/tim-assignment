@@ -84,3 +84,7 @@ class KafkaWrapper:
                 time.sleep(1.0)  # Wait before retry
         logger.error("Failed to produce message after retries")
         return False
+
+
+
+
