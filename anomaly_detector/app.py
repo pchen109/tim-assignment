@@ -9,7 +9,7 @@ import time
 import math
 
 
-with open("/app/conf/ananomaly_detector.yml", 'r') as f:
+with open("/app/conf/anomaly_detector.yml", 'r') as f:
     app_config = yaml.safe_load(f.read())
 
 with open("/app/conf/log_config.yml", "r") as f:

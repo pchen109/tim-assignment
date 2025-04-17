@@ -9,6 +9,7 @@ services:
       - ./logs/anomaly_detector.log:/app/logs/anomaly_detector.log
       - ./conf/log_config.yml:/app/conf/log_config.yml
       - ./conf/anomaly_detector.yml:/app/conf/anomaly_detector.yml
+      - ./data/anomaly_detector/output.json:/app/data/anomaly_detector/output.json
     depends_on:
       kafka:
         condition: service_healthy
