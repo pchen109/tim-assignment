@@ -9,7 +9,7 @@ logs
 scripts
 .env
 terraform
-ansible
+# ansible
 
 ### full back 
 # data/database
