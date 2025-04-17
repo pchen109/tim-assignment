@@ -31,13 +31,11 @@ def update_anomalies():
     stats = {}
     stats["kills_anomalies"] = 0
     stats["login_streak_anomalies"] = 0
-
     
     for msg in consumer:
         message = msg.value.decode("utf-8")
         data = json.loads(message)
         payload = data["payload"]
-
 
         if data["type"] == "user_login":
             if payload["login_streak"] >= 30:
@@ -86,7 +84,7 @@ def update_anomalies():
 
 app = connexion.App(__name__, specification_dir='./')
 app.add_api("openapi.yml",
-            base_path="/analyzer",
+            base_path="/anomaly_detector",
             strict_validation=True,
             validate_responses=True
             )

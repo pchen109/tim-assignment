@@ -5,6 +5,13 @@ services:
       dockerfile: Dockerfile
     environment:
       - TZ=America/Los_Angeles
+    volumes:
+      - ./logs/anomaly_detector.log:/app/logs/anomaly_detector.log
+      - ./conf/log_config.yml:/app/conf/log_config.yml
+      - ./conf/anomaly_detector.yml:/app/conf/anomaly_detector.yml
+    depends_on:
+      kafka:
+        condition: service_healthy
   receiver:
     deploy:
       replicas: 3

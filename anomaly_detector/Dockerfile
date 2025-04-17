@@ -14,7 +14,7 @@ RUN mkdir data
 RUN chown -R nobody:nogroup .
 USER nobody
 
-EXPOSE 8111
+EXPOSE 8222
 
 ENTRYPOINT [ "python3" ]
 CMD [ "app.py" ]
