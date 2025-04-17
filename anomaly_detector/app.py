@@ -39,11 +39,11 @@ def update_anomalies():
 
         if data["type"] == "user_login":
             if payload["login_streak"] >= 30:
-                logger.info(f"Message: detect values {payload["login_streak"]} larger than 30")
+                logger.debug(f"Message: detect values {payload["login_streak"]} larger than 30")
                 stats["login_streak_anomalies"] += 1
         if data["type"] == "player_performance":
             if payload["kills"] >= 20:
-                logger.info(f"Message: detect values {payload["kills"]} larger than 20")
+                logger.debug(f"Message: detect values {payload["kills"]} larger than 20")
                 stats["kills_anomalies"] += 1
     
     with open("/app/data/anomaly_detector/output.json", "w") as fp:
@@ -65,9 +65,13 @@ def update_anomalies():
 
 
 def get_anomalies(event_type):
+    logger.debug(f"start GET anomalies ")
     client = KafkaClient(hosts=f"{app_config['events']['hostname']}:{app_config['events']['port']}")
     topic = client.topics[str.encode('events')]
     consumer = topic.get_simple_consumer(reset_offset_on_start=True, consumer_timeout_ms=1000)
+
+    if event_type != "user_login" or event_type != "player_performance":
+        return 400
 
     anomalies = []
     for msg in consumer:
@@ -75,15 +79,19 @@ def get_anomalies(event_type):
         data = json.loads(message)
         payload = data["payload"]
 
-        if data["type"] == "user_login":
+        if data["type"] == event_type:
             if payload["login_streak"] >= 30:
                 logger.info(f"Message: detect values {payload["login_streak"]} larger than 30")
-                stats["login_streak_anomalies"] += 1
-        if data["type"] == "player_performance":
+                anomalies.append(payload)
+        if data["type"] == event_type:
             if payload["kills"] >= 20:
                 logger.info(f"Message: detect values {payload["kills"]} larger than 20")
-                stats["kills_anomalies"] += 1
-    return None
+                anomalies.append(payload)
+    
+    if len(anomalies) == 0:
+        return 204
+    logger.debug(f"end GET anomalies ")
+    return anomalies
 
 
 app = connexion.App(__name__, specification_dir='./')
