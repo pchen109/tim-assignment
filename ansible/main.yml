@@ -129,7 +129,7 @@
         - { old_name: "receiver_config_prod.yml", new_name: "receiver_config.yml" }
         - { old_name: "storage_config_prod.yml", new_name: "storage_config.yml" }
         - { old_name: "consistency_check_config_prod.yml", new_name: "consistency_check_config.yml" }
-        - { old_name: "ananomaly_detector_prod.yml", new_name: "ananomaly_detector.yml" }
+        - { old_name: "anomaly_detector_prod.yml", new_name: "anomaly_detector.yml" }
 
 
     - name: Set permissions on config files

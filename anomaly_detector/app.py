@@ -70,8 +70,12 @@ def get_anomalies(event_type):
     topic = client.topics[str.encode('events')]
     consumer = topic.get_simple_consumer(reset_offset_on_start=True, consumer_timeout_ms=1000)
 
+    if not path.exists(stats_file_path):
+        logger.error("file not found.")
+        return "The anomalies datastore is missing or corrupted.", 404
+
     if event_type != "user_login" or event_type != "player_performance":
-        return 400
+        return "Invalid Event Type, must be login_info or performance_report", 400
 
     anomalies = []
     for msg in consumer:
@@ -91,7 +95,7 @@ def get_anomalies(event_type):
     if len(anomalies) == 0:
         return 204
     logger.debug(f"end GET anomalies ")
-    return anomalies
+    return anomalies, 200
 
 
 app = connexion.App(__name__, specification_dir='./')
