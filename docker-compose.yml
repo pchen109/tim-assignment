@@ -1,4 +1,10 @@
 services:
+  anomaly_detector:
+    build:
+      context: anomaly_detector
+      dockerfile: Dockerfile
+    environment:
+      - TZ=America/Los_Angeles
   receiver:
     deploy:
       replicas: 3
