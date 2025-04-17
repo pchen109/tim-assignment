@@ -9,7 +9,7 @@ import time
 import math
 
 
-with open("/app/conf/analyzer_config.yml", 'r') as f:
+with open("/app/conf/ananomaly_detector.yml", 'r') as f:
     app_config = yaml.safe_load(f.read())
 
 with open("/app/conf/log_config.yml", "r") as f:
@@ -64,22 +64,27 @@ def update_anomalies():
 
 
 
-# def get_anomalies(event_type):
-#     client = KafkaClient(hosts=f"{app_config['events']['hostname']}:{app_config['events']['port']}")
-#     topic = client.topics[str.encode('events')]
-#     consumer = topic.get_simple_consumer(reset_offset_on_start=True, consumer_timeout_ms=1000)
+def get_anomalies(event_type):
+    client = KafkaClient(hosts=f"{app_config['events']['hostname']}:{app_config['events']['port']}")
+    topic = client.topics[str.encode('events')]
+    consumer = topic.get_simple_consumer(reset_offset_on_start=True, consumer_timeout_ms=1000)
 
-#     counter = 0
-#     for msg in consumer:
-#         message = msg.value.decode("utf-8")
-#         data = json.loads(message)
-#         logger.info(f"WHOLE MESSAGE: {data}")
-#         logger.info("Age: %s" % msg)
-#         payload = data["payload"]
-#         if data["type"] == event_type:
-#             counter += 1
-#             if payload["login_streak"] >= 30:
-#     return None
+    counter = 0
+    anomalies = []
+    for msg in consumer:
+        message = msg.value.decode("utf-8")
+        data = json.loads(message)
+        payload = data["payload"]
+
+        if data["type"] == "user_login":
+            if payload["login_streak"] >= 30:
+                logger.info(f"Message: detect values {payload["login_streak"]} larger than 30")
+                stats["login_streak_anomalies"] += 1
+        if data["type"] == "player_performance":
+            if payload["kills"] >= 20:
+                logger.info(f"Message: detect values {payload["kills"]} larger than 20")
+                stats["kills_anomalies"] += 1
+    return None
 
 
 app = connexion.App(__name__, specification_dir='./')
