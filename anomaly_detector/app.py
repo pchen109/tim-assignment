@@ -19,7 +19,6 @@ with open("/app/conf/log_config.yml", "r") as f:
 logger = logging.getLogger('basicLogger')
 
 stats_file_path = path.abspath(app_config['datastore']['filename'])
-default_initial_state = app_config['schema']['stat']
 
 def update_anomalies():
     time_start = time.time()
