@@ -83,11 +83,11 @@ def get_anomalies(event_type):
         data = json.loads(message)
         payload = data["payload"]
 
-        if data["type"] == event_type:
+        if "user_login" == event_type:
             if payload["login_streak"] >= 30:
                 logger.info(f"Message: detect values {payload["login_streak"]} larger than 30")
                 anomalies.append(payload)
-        if data["type"] == event_type:
+        if "player_performance" == event_type:
             if payload["kills"] >= 20:
                 logger.info(f"Message: detect values {payload["kills"]} larger than 20")
                 anomalies.append(payload)
