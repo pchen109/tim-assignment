@@ -69,7 +69,6 @@ def get_anomalies(event_type):
     topic = client.topics[str.encode('events')]
     consumer = topic.get_simple_consumer(reset_offset_on_start=True, consumer_timeout_ms=1000)
 
-    counter = 0
     anomalies = []
     for msg in consumer:
         message = msg.value.decode("utf-8")
